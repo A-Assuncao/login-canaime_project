@@ -1,0 +1,6 @@
+venv
+.idea
+requirements.txt
+pyproject.toml
+setup.py
+test.py

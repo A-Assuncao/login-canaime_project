@@ -24,7 +24,7 @@ Este projeto fornece um sistema de login automatizado para o sistema Canaimé, p
 
 Clone este repositório e instale as dependências:
 
-```
+```bash
 git clone https://github.com/username/login-canaime.git
 cd login-canaime
 pip install -r requirements.txt
