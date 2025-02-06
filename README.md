@@ -1,85 +1,112 @@
 
 # Login Canaimé
 
-Este projeto fornece um sistema de login automatizado para o sistema Canaimé, permitindo a autenticação por meio de uma interface gráfica (GUI) ou um login direto com JavaScript e imagens desativadas para eficiência. A biblioteca usa `playwright` para automação do navegador, permitindo fácil navegação após o login.
+**Login Canaimé** é uma biblioteca Python que fornece uma interface gráfica moderna para realizar o login no Sistema Canaimé, um sistema desenvolvido para gerenciar unidades prisionais e facilitar o controle de dados de reeducandos, dados administrativos, visitantes e acesso em tempo real a informações para órgãos como a Justiça, Defensoria Pública e Ministério Público.
 
-## Funcionalidades
+A biblioteca integra o **Model**, **View** e **Controller** para fornecer um fluxo de login robusto e reutilizável. Além disso, ela utiliza o **PySide6** para a interface gráfica e o **Playwright** para automatizar o processo de login, permitindo a execução em modo headless (para produção) ou não-headless (para testes).
 
-- **Interface Gráfica (GUI)** para login, onde o usuário pode inserir suas credenciais manualmente.
-- **Login Automatizado** sem interface gráfica, com JavaScript e imagens desativadas.
-- **Controle de Navegação**: Capacidade de navegar entre páginas com `playwright` após o login.
-- **Opção de Teste**: Quando `test=True`, o navegador é aberto em modo visível (não headless) e as credenciais são exibidas no console.
+## Características
 
-## Requisitos
+ 1. **Interface moderna e personalizável:**
+	  - Janela sem borda e fundo translúcido;
+     - Campos de e-mail e senha (este último com caracteres ocultos);
+     - Ícone personalizado (baixado a partir de uma URL);
+     - Spinner de carregamento (GIF animado) durante o processo de login;
+     - Janela arrastável (mesmo sem borda);
 
- - **Python 3.7+**
-  - **Playwright**: Para instalar o Playwright e o navegador Chromium, execute o seguinte comando:
+ 2. **Fluxo de login assíncrono:**  
+	 - Utiliza o QThread (via subclassificação de QThread) para executar o processo de login sem travar a interface;
 
-  ```bash
-  pip install playwright
-  playwright install
-  ```
+ 3. **Retorno do resultado:**  
+	 - Retorna o objeto `Page` logado (do Playwright) para uso em aplicações reais;
+	 - Permite também, em modo de desenvolvimento, obter as credenciais digitadas.
 
-## Instalação
+## Estrutura do Projeto
 
-Clone este repositório e instale as dependências:
+```markdown
+📦 login-canaime_project/        # Diretório raiz do projeto
+├── ⚙️ config.py                 # Configurações globais do projeto
+├── 📋 requirements.txt          # Lista de dependências do projeto
+├── 🛡️ LICENSE                   # Arquivo de licença do projeto
+├── 📖 README.md                 # Documentação do projeto
+└── 📦 loginCanaime/             # Pacote principal
+    ├── 📄 __init__.py           # Inicializa o pacote e expõe a classe Login
+    ├── 📄 model.py              # Lógica de negócio (Model, utilizando Playwright)
+    ├── 📄 view.py               # Interface gráfica (View, utilizando PySide6)
+    ├── 📄 controller.py         # Controle de fluxo (Controller, utilizando QThread)
+    └── 📄 main.py               # Funções principais para login
+   ```
+
+ ## Instalação
+O pacote pode ser instalado via pip. Depois de empacotar o projeto (o nome de distribuição é `login-canaime`), você pode instalá-lo com:
 
 ```bash
-git clone https://github.com/username/login-canaime.git
-cd login-canaime
-pip install -r requirements.txt
-```
+pip install login-canaime
+``` 
 
-> **Nota**: Certifique-se de instalar o Chromium com `playwright install` se ele ainda não estiver instalado.
+> **Observação:**  
+> O nome do pacote para importação é `loginCanaime`. Isso significa que, após a instalação, você usará:
+> ```bash
+> from loginCanaime import Login
+> ```
 
 ## Uso
 
-### Login com Interface Gráfica (GUI)
+### Exemplo de Uso em Produção
 
-O login com GUI permite que você insira manualmente o usuário e senha:
+Para iniciar o fluxo de login e obter o objeto `Page` logado (útil para integrar com outras aplicações que utilizam o Playwright):
 
-```
-from login_canaime import run_canaime_login
+```bash
+from loginCanaime import Login
 
-username, password = run_canaime_login(test_mode=True)
-print(f"Credenciais: {username}, {password}")
-```
+# Inicia o login; o parâmetro test_mode=False faz com que o navegador rode em modo headless
+page = Login.run(test_mode=False)
+if page:
+    print("Login efetuado com sucesso!")
+    # Utilize o objeto page conforme necessário...
+else:
+    print("Falha no login ou o login foi cancelado.")
+   ```
 
-### Login Automatizado sem Interface Gráfica
+### Exemplo de Uso em Desenvolvimento
+Se você quiser apenas obter as credenciais digitadas (por exemplo, para testes):
 
-Para realizar o login diretamente, desativando JavaScript e imagens, use a função `Login()`:
+```bash
+from loginCanaime import Login
 
-```
-from login_canaime import Login
+credentials = Login.get_credentials(test_mode=False)
+print("Credenciais digitadas:", credentials)
+``` 
 
-page = Login(test=False)  # Defina test=True para abrir em modo visível
+## Funcionamento Interno
 
-page.goto("https://www.google.com.br")
-
-# Feche o navegador e o Playwright ao terminar
-browser.close()
-playwright.stop()
-```
-
-### Função `Login` Detalhada
-
-A função `Login(test=False)` usa as credenciais da GUI e realiza o login automaticamente com JavaScript e imagens desativadas, retornando o navegador (`browser`) e a página (`page`) para operações adicionais.
-
--   **Parâmetros**:
+-   **Model:**  
+    O módulo `model.py` utiliza o Playwright para abrir o navegador, navegar até a página de login e preencher os campos de usuário e senha.  
+    Ele utiliza uma heurística baseada no conteúdo de um elemento específico da página para confirmar o sucesso do login e retorna uma tupla `(True, full_name, page)` ou `(False, "", None)`.
     
-    -   `test` (bool): Se `True`, abre o navegador em modo visível. Se `False`, abre em modo headless (oculto).
-        
--   **Retorno**:
+-   **View:**  
+    O módulo `view.py` implementa a interface gráfica com PySide6, contendo campos para e-mail e senha, botão de login, label de status e um spinner de carregamento (GIF).  
+    A interface é configurada sem borda, com um ícone personalizado (baixado de uma URL) e permite arrastar a janela.
     
-    -   `page`: Página logada, pronta para navegação.        
-    -   `browser`: Instância do navegador, que deve ser fechada manualmente.        
-    -   `playwright`: Contexto do Playwright, que deve ser encerrado ao final.
-        
+-   **Controller:**  
+    O módulo `controller.py` conecta a View e o Model. Utiliza um QThread (via subclassificação de QThread na classe `LoginThread`) para executar o login de forma assíncrona, mantendo a interface responsiva.  
+    O Controller finaliza o aplicativo automaticamente assim que o login é concluído, retornando o objeto `Page` logado.
+    
 
 ## Contribuição
 
-Sinta-se à vontade para abrir issues e pull requests para melhorias ou correções.
+Contribuições são bem-vindas! Se você deseja melhorar o código, adicione novas funcionalidades ou corrigir problemas, sinta-se à vontade para abrir _issues_ ou enviar _pull requests_.
+
+
+
+## Contato
+
+Anderson Assunção – andersongomesrr@hotmail.com  
+Projeto disponível em: [https://github.com/A-Assuncao/login-canaime_project](https://github.com/A-Assuncao/login-canaime_project)
 
 ## Licença
 
-Este projeto está licenciado sob a MIT License. Consulte o arquivo `LICENSE` para mais detalhes.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENÇA](LICENSE) para mais detalhes.  
+  
+----------  
+**Desenvolvido com ♥ e Python.**

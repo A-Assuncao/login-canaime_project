@@ -1,6 +1,10 @@
 venv
+.pypirc
 .idea
-requirements.txt
+.pytest_cache
+*__pycache__
+*tests
 pyproject.toml
 setup.py
-test.py
+dist
+login_canaime.egg-info
