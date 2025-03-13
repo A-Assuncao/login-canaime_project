@@ -1,10 +1,151 @@
-venv
+# Bytecode compilado Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos de distribuição/empacotamento
+dist/
+build/
+*.egg-info/
+*.egg
+MANIFEST
+
+# Binários da extensão C
+*.so
+*.dll
+
+# Ambiente virtual
+venv/
+env/
+ENV/
+.venv/
+.env/
+.ENV/
+.uv/
+.Python
+env/
+.python-version
+
+# Playwright
+.playwright-browsers/
+
+# Distribuição / empacotamento
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Testes e coverage
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+.ruff_cache/
+
+# Log files
+*.log
+logs/
+
+# Sphinx documentation
+docs/_build/
+docs/source/_build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Arquivos de projeto IDE
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+.ionide/
+
+# PyCharm/IntelliJ
+.idea/
+*.iml
+*.iws
+.idea_modules/
+out/
+atlassian-ide-plugin.xml
+
+# Eclipse
+.project
+.classpath
+.settings/
+*.launch
+*.pydevproject
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Arquivos de sistema operacional
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Tipos de arquivos a serem ignorados
+*.bak
+*.swp
+*.tmp
+*~.nib
+*.log
+*.so
+*.o
+*.manifest
+
+# Virtual environments
+.nox/
+
+# Gerados por Rope
+.ropeproject/
+
+# Arquivos de credenciais e segredos
+.env
+credentials/
+
+# Arquivo de lock de dependências para pip/poetry locais
+Pipfile.lock
+poetry.lock 
+
+# outros
 .pypirc
-.idea
-.pytest_cache
-*__pycache__
-*tests
-pyproject.toml
-setup.py
-dist
-login_canaime.egg-info
+.cursor
+
