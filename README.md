@@ -1,7 +1,7 @@
 # login-canaime
 
 <p align="center">
-  <img src="https://github.com/A-Assuncao/login-canaime/brasao.png" alt="Login Canaime Logo" width="200"/>
+  <img src="https://github.com/A-Assuncao/login-canaime/raw/main/docs/images/brasao.png" alt="Login Canaime Logo" width="200"/>
 </p>
 
 **login-canaime** é uma biblioteca Python que simplifica a autenticação e manipulação do sistema Canaimé. Utilizando o Playwright para automação de navegação web, esta biblioteca permite autenticar-se no sistema Canaimé e obter uma página já logada para manipulação direta.
